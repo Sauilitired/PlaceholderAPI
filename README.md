@@ -37,7 +37,7 @@ PlaceholderAPI is licensed under the __GNU GPLv3__ license. Refer to the [LICENS
 [issues]: https://github.com/Sauilitired/PlaceholderAPI
 [discord]: https://discord.gg/J9kCtdg
 [spigot]: https://www.spigotmc.org/resources/placeholderapi.6245/
-[ci]: http://ci.extendedclip.com/job/PlaceholderAPI/
+[ci]: https://ci.athion.net/job/PlaceholderAPI/
 [expansions]: https://api.extendedclip.com/all/
 [placeholder-list]: https://www.spigotmc.org/wiki/placeholderapi-placeholders/
 [statistics]: https://bstats.org/plugin/bukkit/PlaceholderAPI
