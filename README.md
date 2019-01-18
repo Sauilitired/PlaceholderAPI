@@ -1,7 +1,5 @@
 [![PlaceholderAPI Logo](https://i.imgur.com/Ea4PURv.png)][spigot]
 
-[![Build Status](http://ci.extendedclip.com/buildStatus/icon?job=PlaceholderAPI)][ci]
-
 # Information 
 Sauilitired's fork of the PlaceholderAPI repo. Changes include:
 - Code style enforcement
