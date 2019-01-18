@@ -144,3 +144,68 @@ dist/
 nbdist/
 .nb-gradle/
 nbactions.xml
+### JetBrains template
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Sensitive or high-churn files
+.idea/**/dbnavigator.xml
+
+# Gradle
+
+# CMake
+cmake-build-release/
+
+# Mongo Explorer plugin
+
+# File-based project format
+
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+
+# JIRA plugin
+
+# Cursive Clojure plugin
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+
+# Editor-based Rest Client
+.idea/httpRequests
+### Maven template
+
+# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
+### Eclipse template
+
+
+# External tool builders
+
+# Locally stored "Eclipse launch configurations"
+
+# PyDev specific (Python IDE for Eclipse)
+
+# CDT-specific (C/C++ Development Tooling)
+
+# CDT- autotools
+.autotools
+
+# Java annotation processor (APT)
+
+# PDT-specific (PHP Development Tools)
+
+# sbteclipse plugin
+
+# Tern plugin
+
+# TeXlipse plugin
+
+# STS (Spring Tool Suite)
+
+# Code Recommenders
+
+# Scala IDE specific (Scala & Java development for Eclipse)
