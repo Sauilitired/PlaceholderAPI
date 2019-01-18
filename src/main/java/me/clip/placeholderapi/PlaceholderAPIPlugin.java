@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Ryan McCarthy
  */
-public class PlaceholderAPIPlugin extends JavaPlugin {
+@SuppressWarnings("unused") public class PlaceholderAPIPlugin extends JavaPlugin {
 
     private static PlaceholderAPIPlugin instance;
     private static SimpleDateFormat dateFormat;
@@ -62,13 +62,13 @@ public class PlaceholderAPIPlugin extends JavaPlugin {
         boolean spigot = false;
         try {
             v = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        } catch (ArrayIndexOutOfBoundsException ex) {
+        } catch (ArrayIndexOutOfBoundsException ignored) {
         }
         try {
             Class.forName("org.spigotmc.SpigotConfig");
             Class.forName("net.md_5.bungee.api.chat.BaseComponent");
             spigot = true;
-        } catch (ExceptionInInitializerError | ClassNotFoundException exception) {
+        } catch (ExceptionInInitializerError | ClassNotFoundException ignored) {
         }
         return new Version(v, spigot);
     }

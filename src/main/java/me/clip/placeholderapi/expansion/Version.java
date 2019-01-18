@@ -39,7 +39,7 @@ public final class Version {
         return isSpigot;
     }
 
-    public boolean compareTo(String version) {
+    @SuppressWarnings("unused") public boolean compareTo(String version) {
         return getVersion().equalsIgnoreCase(version);
     }
 

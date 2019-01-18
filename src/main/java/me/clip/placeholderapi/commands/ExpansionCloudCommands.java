@@ -37,16 +37,15 @@ import java.util.Map.Entry;
 import static me.clip.placeholderapi.util.Msg.color;
 import static me.clip.placeholderapi.util.Msg.msg;
 
-public class ExpansionCloudCommands implements CommandExecutor {
+public final class ExpansionCloudCommands implements CommandExecutor {
 
-    private PlaceholderAPIPlugin plugin;
+    private final PlaceholderAPIPlugin plugin;
 
-    public ExpansionCloudCommands(PlaceholderAPIPlugin instance) {
+    ExpansionCloudCommands(PlaceholderAPIPlugin instance) {
         plugin = instance;
     }
 
     @Override public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
-
         if (args.length == 1) {
             msg(s, "&bExpansion cloud commands", " ", "&b/papi ecloud status",
                 "&fView status of the ecloud", "&b/papi ecloud list <all/author> (page)",
@@ -99,7 +98,6 @@ public class ExpansionCloudCommands implements CommandExecutor {
         }
 
         if (args[1].equalsIgnoreCase("info")) {
-
             if (args.length < 3) {
                 msg(s, "&cAn expansion name must be specified!");
                 return true;
@@ -192,21 +190,16 @@ public class ExpansionCloudCommands implements CommandExecutor {
         }
 
         if (args[1].equalsIgnoreCase("placeholders")) {
-
             if (args.length < 3) {
                 msg(s, "&cAn expansion name must be specified!");
                 return true;
             }
-
             CloudExpansion expansion = plugin.getExpansionCloud().getCloudExpansion(args[2]);
-
             if (expansion == null) {
                 msg(s, "&cNo expansion found by the name: &f" + args[2]);
                 return true;
             }
-
             List<String> placeholders = expansion.getPlaceholders();
-
             if (placeholders == null) {
                 msg(s, "&cThe expansion: &f" + expansion.getName()
                         + " &cdoes not have any placeholders listed.",
@@ -214,7 +207,6 @@ public class ExpansionCloudCommands implements CommandExecutor {
                         + " &7and ask for them to be added.");
                 return true;
             }
-
             if (!(s instanceof Player)
                 || plugin.getExpansionManager().getRegisteredExpansion(expansion.getName())
                 == null) {
@@ -222,12 +214,10 @@ public class ExpansionCloudCommands implements CommandExecutor {
                     String.join("&a, &f", placeholders));
                 return true;
             }
-
             Player p = (Player) s;
             JSONMessage message =
                 JSONMessage.create(color("&bPlaceholders: &f" + placeholders.size()));
             message.then("\n");
-
             for (int i = 0; i < placeholders.size(); i++) {
                 if (i == placeholders.size() - 1) {
                     message.then(placeholders.get(i));
@@ -236,32 +226,25 @@ public class ExpansionCloudCommands implements CommandExecutor {
                 }
                 message.tooltip(PlaceholderAPI.setPlaceholders(p, placeholders.get(i)));
             }
-
             message.send(p);
             return true;
         }
 
         if (args[1].equalsIgnoreCase("list")) {
-
             int page = 1;
-
             String author;
             boolean installed = false;
-
             if (args.length < 3) {
                 msg(s, "&cIncorrect usage! &7/papi ecloud list <all/author/installed> (page)");
                 return true;
             }
-
             author = args[2];
-
             if (author.equalsIgnoreCase("all")) {
                 author = null;
             } else if (author.equalsIgnoreCase("installed")) {
                 author = null;
                 installed = true;
             }
-
             if (args.length >= 4) {
                 try {
                     page = Integer.parseInt(args[3]);
@@ -270,16 +253,12 @@ public class ExpansionCloudCommands implements CommandExecutor {
                     return true;
                 }
             }
-
             if (page < 1) {
                 msg(s, "&cPage must be greater than or equal to 1!");
                 return true;
             }
-
             int avail;
-
             Map<Integer, CloudExpansion> ex;
-
             if (installed) {
                 ex = plugin.getExpansionCloud().getAllInstalled();
             } else if (author == null) {
@@ -287,40 +266,31 @@ public class ExpansionCloudCommands implements CommandExecutor {
             } else {
                 ex = plugin.getExpansionCloud().getAllByAuthor(author);
             }
-
             if (ex == null || ex.isEmpty()) {
                 msg(s, "&cNo expansions available" + (author != null ?
                     " for author &f" + author :
                     ""));
                 return true;
             }
-
             avail = plugin.getExpansionCloud().getPagesAvailable(ex, 10);
-
             if (page > avail) {
                 msg(s, "&cThere " + ((avail == 1) ?
                     " is only &f" + avail + " &cpage available!" :
                     "are only &f" + avail + " &cpages available!"));
                 return true;
             }
-
             msg(s, "&bShowing expansions for&7: &f" + (author != null ?
                 author :
                 (installed ? "all installed" : "all available")) + " &8&m--&r &bamount&7: &f" + ex
                 .size() + " &bpage&7: &f" + page + "&7/&f" + avail);
-
             ex = plugin.getExpansionCloud().getPage(ex, page, 10);
-
             if (ex == null) {
                 msg(s, "&cThere was a problem getting the requested page...");
                 return true;
             }
-
             msg(s, "&aGreen = Expansions you have");
             msg(s, "&6Gold = Expansions which need updated");
-
             if (!(s instanceof Player)) {
-
                 for (Entry<Integer, CloudExpansion> expansion : ex.entrySet()) {
                     if (expansion == null || expansion.getValue() == null) {
                         continue;
@@ -334,15 +304,11 @@ public class ExpansionCloudCommands implements CommandExecutor {
 
                 return true;
             }
-
             Player p = (Player) s;
-
             for (Entry<Integer, CloudExpansion> expansion : ex.entrySet()) {
-
                 if (expansion == null || expansion.getValue() == null) {
                     continue;
                 }
-
                 StringBuilder sb = new StringBuilder();
                 if (expansion.getValue().shouldUpdate()) {
                     sb.append("&6Click to update to the latest version of this expansion\n\n");
@@ -351,13 +317,14 @@ public class ExpansionCloudCommands implements CommandExecutor {
                 } else {
                     sb.append("&aYou have the latest version of this expansion\n\n");
                 }
-                sb.append("&bAuthor&7: &f" + expansion.getValue().getAuthor() + "\n");
-                sb.append("&bVerified&7: &f" + expansion.getValue().isVerified() + "\n");
-                sb.append("&bLatest version&7: &f" + expansion.getValue().getVersion().getVersion()
-                    + "\n");
-                sb.append("&bLast updated&7: &f" + expansion.getValue().getTimeSinceLastUpdate()
-                    + " ago\n");
-                sb.append("\n" + expansion.getValue().getDescription());
+                sb.append("&bAuthor&7: &f").append(expansion.getValue().getAuthor()).append("\n");
+                sb.append("&bVerified&7: &f").append(expansion.getValue().isVerified())
+                    .append("\n");
+                sb.append("&bLatest version&7: &f")
+                    .append(expansion.getValue().getVersion().getVersion()).append("\n");
+                sb.append("&bLast updated&7: &f")
+                    .append(expansion.getValue().getTimeSinceLastUpdate()).append(" ago\n");
+                sb.append("\n").append(expansion.getValue().getDescription());
 
                 String msg = color("&b" + (expansion.getKey() + 1) + "&7: " + (expansion.getValue()
                     .shouldUpdate() ? "&6" : (expansion.getValue().hasExpansion() ? "&a" : ""))
@@ -425,6 +392,5 @@ public class ExpansionCloudCommands implements CommandExecutor {
         msg(s, "&cIncorrect usage! &b/papi ecloud");
         return true;
     }
-
 
 }

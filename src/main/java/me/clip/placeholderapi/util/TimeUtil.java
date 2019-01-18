@@ -20,10 +20,9 @@
  */
 package me.clip.placeholderapi.util;
 
-public class TimeUtil {
+public final class TimeUtil {
 
-    public static String getRemaining(int seconds, TimeFormat type) {
-
+    @SuppressWarnings("unused") public static String getRemaining(int seconds, TimeFormat type) {
         if (seconds < 60) {
             switch (type) {
                 case DAYS:
@@ -108,7 +107,6 @@ public class TimeUtil {
     }
 
     public static String getTime(int seconds) {
-
         if (seconds < 60) {
             return seconds + "s";
         }
@@ -118,9 +116,11 @@ public class TimeUtil {
         int secondsLeft = seconds - s;
         if (minutes < 60) {
             if (secondsLeft > 0) {
-                return String.valueOf(minutes + "m " + secondsLeft + "s");
+                return String.format("%dm %ds", minutes, s);
+                // return String.valueOf(minutes + "m " + secondsLeft + "s"); wat?
             } else {
-                return String.valueOf(minutes + "m");
+                return String.format("%dm", minutes);
+                // return String.valueOf(minutes + "m"); // wat?
             }
         }
         if (minutes < 1440) {

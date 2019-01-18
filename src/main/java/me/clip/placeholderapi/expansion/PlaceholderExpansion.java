@@ -29,7 +29,8 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
 
-public abstract class PlaceholderExpansion extends PlaceholderHook {
+@SuppressWarnings({"unused", "WeakerAccess"}) public abstract class PlaceholderExpansion
+    extends PlaceholderHook {
 
     /**
      * The name of this expansion
@@ -41,7 +42,7 @@ public abstract class PlaceholderExpansion extends PlaceholderHook {
     }
 
     /**
-     * The placeholder identifier of this expanion
+     * The placeholder identifier of this expansion
      *
      * @return placeholder identifier that is associated with this expansion
      */
@@ -67,7 +68,7 @@ public abstract class PlaceholderExpansion extends PlaceholderHook {
      *
      * @return plugin name that this expansion requires to function
      */
-    public String getRequiredPlugin() {
+    @SuppressWarnings("deprecation") public String getRequiredPlugin() {
         return getPlugin();
     }
 

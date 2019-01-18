@@ -31,9 +31,9 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-public class FileUtil {
+public final class FileUtil {
 
-    public static List<Class<?>> getClasses(String folder, Class<?> type) {
+    @SuppressWarnings("unused") public static List<Class<?>> getClasses(String folder, Class<?> type) {
         return getClasses(folder, null, type);
     }
 
@@ -59,7 +59,7 @@ public class FileUtil {
                 list = gather(file.toURI().toURL(), list, type);
             }
             return list;
-        } catch (Throwable t) {
+        } catch (Throwable ignored) {
         }
         return null;
     }
@@ -88,7 +88,7 @@ public class FileUtil {
                     }
                 }
             }
-        } catch (Throwable t) {
+        } catch (Throwable ignored) {
         }
         return list;
     }

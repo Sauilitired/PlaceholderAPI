@@ -23,7 +23,7 @@ package me.clip.placeholderapi;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-public abstract class PlaceholderHook {
+@SuppressWarnings({"unused", "WeakerAccess"}) public abstract class PlaceholderHook {
 
     /**
      * called when a placeholder value is requested from this hook

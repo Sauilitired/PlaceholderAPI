@@ -37,35 +37,28 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-
-public class PlaceholderListener implements Listener {
+public final class PlaceholderListener implements Listener {
 
     private PlaceholderAPIPlugin plugin;
 
-    public PlaceholderListener(PlaceholderAPIPlugin instance) {
+    PlaceholderListener(final PlaceholderAPIPlugin instance) {
         plugin = instance;
         Bukkit.getPluginManager().registerEvents(this, instance);
     }
 
-    @EventHandler public void onExpansionUnregister(ExpansionUnregisterEvent event) {
-
+    @EventHandler public void onExpansionUnregister(final ExpansionUnregisterEvent event) {
         if (event.getExpansion() instanceof Listener) {
             HandlerList.unregisterAll((Listener) event.getExpansion());
         }
-
         if (event.getExpansion() instanceof Taskable) {
             ((Taskable) event.getExpansion()).stop();
         }
-
         if (event.getExpansion() instanceof Cacheable) {
             ((Cacheable) event.getExpansion()).clear();
         }
-
         if (plugin.getExpansionCloud() != null) {
-
             CloudExpansion ex =
                 plugin.getExpansionCloud().getCloudExpansion(event.getExpansion().getName());
-
             if (ex != null) {
                 ex.setHasExpansion(false);
                 ex.setShouldUpdate(false);
@@ -74,37 +67,25 @@ public class PlaceholderListener implements Listener {
     }
 
     @EventHandler public void onEnable(PluginEnableEvent event) {
-        ExpansionManager m = plugin.getExpansionManager();
-        PlaceholderExpansion e = m.getCachedExpansion(event.getPlugin().getName().toLowerCase());
-        if (e != null && e.canRegister()) {
-            if (e.isRegistered() || m.registerExpansion(e)) {
-                m.removeCachedExpansion(e.getRequiredPlugin());
-            }
+        final ExpansionManager m = plugin.getExpansionManager();
+        final PlaceholderExpansion e =
+            m.getCachedExpansion(event.getPlugin().getName().toLowerCase());
+        if (e != null && e.canRegister() && (e.isRegistered() || m.registerExpansion(e))) {
+            m.removeCachedExpansion(e.getRequiredPlugin());
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH) public void onPluginUnload(PluginDisableEvent e) {
-
-        String n = e.getPlugin().getName();
-
-        if (n == null) {
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPluginUnload(final PluginDisableEvent e) {
+        final String n = e.getPlugin().getName();
+        if (n == null || n.equals(plugin.getName())) {
             return;
         }
-
-        if (n.equals(plugin.getName())) {
-            return;
-        }
-
-        Map<String, PlaceholderHook> hooks = PlaceholderAPI.getPlaceholders();
-
+        final Map<String, PlaceholderHook> hooks = PlaceholderAPI.getPlaceholders();
         for (Entry<String, PlaceholderHook> hook : hooks.entrySet()) {
-
             PlaceholderHook i = hook.getValue();
-
             if (i instanceof EZPlaceholderHook) {
-
                 EZPlaceholderHook h = (EZPlaceholderHook) i;
-
                 if (h.getPluginName() == null) {
                     continue;
                 }
@@ -118,13 +99,10 @@ public class PlaceholderListener implements Listener {
                     }
                 }
             } else if (i instanceof PlaceholderExpansion) {
-
-                PlaceholderExpansion ex = (PlaceholderExpansion) i;
-
+                final PlaceholderExpansion ex = (PlaceholderExpansion) i;
                 if (ex.getRequiredPlugin() == null) {
                     continue;
                 }
-
                 if (ex.getRequiredPlugin().equalsIgnoreCase(n)) {
                     if (PlaceholderAPI.unregisterExpansion(ex)) {
                         plugin.getLogger()
@@ -135,15 +113,12 @@ public class PlaceholderListener implements Listener {
         }
     }
 
-    @EventHandler public void onQuit(PlayerQuitEvent e) {
-
-        Set<PlaceholderExpansion> expansions = PlaceholderAPI.getExpansions();
-
+    @EventHandler public void onQuit(final PlayerQuitEvent e) {
+        final Set<PlaceholderExpansion> expansions = PlaceholderAPI.getExpansions();
         if (expansions.isEmpty()) {
             return;
         }
-
-        for (PlaceholderExpansion ex : expansions) {
+        for (final PlaceholderExpansion ex : expansions) {
             if (ex instanceof Cleanable) {
                 ((Cleanable) ex).cleanup(e.getPlayer());
             }

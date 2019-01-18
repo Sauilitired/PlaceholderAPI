@@ -27,18 +27,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
-public class CloudExpansion {
+@SuppressWarnings("unused") public class CloudExpansion {
 
     private String name, author, latest_version, description, source_url, dependency_url;
-
     private boolean hasExpansion, shouldUpdate, verified;
-
     private long last_update, ratings_count;
-
     private double average_rating;
-
     private List<String> placeholders;
-
     private List<Version> versions;
 
     public CloudExpansion() {
@@ -132,7 +127,7 @@ public class CloudExpansion {
         return verified;
     }
 
-    public long getLastUpdate() {
+    @SuppressWarnings("WeakerAccess") public long getLastUpdate() {
         return last_update;
     }
 

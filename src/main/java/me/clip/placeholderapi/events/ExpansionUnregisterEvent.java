@@ -24,12 +24,12 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class ExpansionUnregisterEvent extends Event {
+@SuppressWarnings("unused") public class ExpansionUnregisterEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
-    private PlaceholderExpansion expansion;
+    private final PlaceholderExpansion expansion;
 
-    public ExpansionUnregisterEvent(PlaceholderExpansion expansion) {
+    public ExpansionUnregisterEvent(final PlaceholderExpansion expansion) {
         this.expansion = expansion;
     }
 
@@ -42,6 +42,6 @@ public class ExpansionUnregisterEvent extends Event {
     }
 
     public PlaceholderExpansion getExpansion() {
-        return expansion;
+        return this.expansion;
     }
 }

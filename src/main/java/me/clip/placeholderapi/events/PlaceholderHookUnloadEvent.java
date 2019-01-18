@@ -24,13 +24,13 @@ import me.clip.placeholderapi.PlaceholderHook;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-@Deprecated public class PlaceholderHookUnloadEvent extends Event {
+@Deprecated @SuppressWarnings("unused") public class PlaceholderHookUnloadEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
-    private String plugin;
-    private PlaceholderHook hook;
+    private final String plugin;
+    private final PlaceholderHook hook;
 
-    public PlaceholderHookUnloadEvent(String plugin, PlaceholderHook placeholderHook) {
+    public PlaceholderHookUnloadEvent(final String plugin, final PlaceholderHook placeholderHook) {
         this.plugin = plugin;
         this.hook = placeholderHook;
     }
@@ -44,10 +44,10 @@ import org.bukkit.event.HandlerList;
     }
 
     public String getHookName() {
-        return plugin;
+        return this.plugin;
     }
 
     public PlaceholderHook getHook() {
-        return hook;
+        return this.hook;
     }
 }

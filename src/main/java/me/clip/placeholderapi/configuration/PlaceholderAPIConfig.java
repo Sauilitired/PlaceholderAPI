@@ -24,15 +24,15 @@ import me.clip.placeholderapi.PlaceholderAPIPlugin;
 
 public class PlaceholderAPIConfig {
 
-    private PlaceholderAPIPlugin plugin;
+    private final PlaceholderAPIPlugin plugin;
 
-    public PlaceholderAPIConfig(PlaceholderAPIPlugin i) {
-        plugin = i;
+    public PlaceholderAPIConfig(final PlaceholderAPIPlugin i) {
+        this.plugin = i;
     }
 
     public void loadDefConfig() {
-        plugin.saveDefaultConfig();
-        plugin.reloadConfig();
+        this.plugin.saveDefaultConfig();
+        this.plugin.reloadConfig();
     }
 
     public boolean checkUpdates() {

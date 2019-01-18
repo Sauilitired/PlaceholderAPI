@@ -13,7 +13,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class UpdateChecker implements Listener {
+@SuppressWarnings("unused") public class UpdateChecker implements Listener {
 
     private final int RESOURCE_ID = 6245;
     private PlaceholderAPIPlugin plugin;
@@ -29,7 +29,7 @@ public class UpdateChecker implements Listener {
         return updateAvailable;
     }
 
-    public String getSpigotVersion() {
+    @SuppressWarnings("WeakerAccess") public String getSpigotVersion() {
         return spigotVersion;
     }
 

@@ -25,7 +25,8 @@ import me.clip.placeholderapi.PlaceholderHook;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.Plugin;
 
-@Deprecated public abstract class EZPlaceholderHook extends PlaceholderHook {
+@Deprecated @SuppressWarnings("unused") public abstract class EZPlaceholderHook
+    extends PlaceholderHook {
 
     private String identifier;
 

@@ -39,13 +39,15 @@ import java.util.Map.Entry;
 public final class ExpansionManager {
 
     private final Map<String, PlaceholderExpansion> cache = new HashMap<>();
-    private PlaceholderAPIPlugin plugin;
+    private final PlaceholderAPIPlugin plugin;
 
     public ExpansionManager(PlaceholderAPIPlugin instance) {
         plugin = instance;
         File f = new File(PlaceholderAPIPlugin.getInstance().getDataFolder(), "expansions");
         if (!f.exists()) {
-            f.mkdirs();
+            if (!f.mkdirs()) {
+                instance.getLogger().severe("Failed to create expansions directory");
+            }
         }
     }
 
@@ -165,37 +167,39 @@ public final class ExpansionManager {
         if (subs == null || subs.isEmpty()) {
             return;
         }
-        for (Class<?> klass : subs) {
-            PlaceholderExpansion ex = createInstance(klass);
+        for (Class<?> clazz : subs) {
+            PlaceholderExpansion ex = createInstance(clazz);
             if (ex != null) {
                 registerExpansion(ex);
             }
         }
     }
 
-    private PlaceholderExpansion createInstance(Class<?> klass) {
-        if (klass == null) {
+    private PlaceholderExpansion createInstance(Class<?> clazz) {
+        if (clazz == null) {
             return null;
         }
         PlaceholderExpansion ex = null;
-        if (!PlaceholderExpansion.class.isAssignableFrom(klass)) {
+        if (!PlaceholderExpansion.class.isAssignableFrom(clazz)) {
             return null;
         }
         try {
-            Constructor<?>[] c = klass.getConstructors();
+            Constructor<?>[] c = clazz.getConstructors();
             if (c.length == 0) {
-                ex = (PlaceholderExpansion) klass.newInstance();
+                //noinspection deprecation
+                ex = (PlaceholderExpansion) clazz.newInstance();
             } else {
                 for (Constructor<?> con : c) {
                     if (con.getParameterTypes().length == 0) {
-                        ex = (PlaceholderExpansion) klass.newInstance();
+                        //noinspection deprecation
+                        ex = (PlaceholderExpansion) clazz.newInstance();
                         break;
                     }
                 }
             }
         } catch (Throwable t) {
             plugin.getLogger()
-                .severe("Failed to init placeholder expansion from class: " + klass.getName());
+                .severe("Failed to init placeholder expansion from class: " + clazz.getName());
             plugin.getLogger().severe(t.getMessage());
         }
         return ex;

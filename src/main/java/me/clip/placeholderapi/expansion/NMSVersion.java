@@ -20,7 +20,7 @@
  */
 package me.clip.placeholderapi.expansion;
 
-public enum NMSVersion {
+@SuppressWarnings("unused") public enum NMSVersion {
 
     UNKNOWN("unknown"), SPIGOT_1_7_R1("v1_7_R1"), SPIGOT_1_7_R2("v1_7_R2"), SPIGOT_1_7_R3(
         "v1_7_R3"), SPIGOT_1_7_R4("v1_7_R4"), SPIGOT_1_8_R1("v1_8_R1"), SPIGOT_1_8_R2(

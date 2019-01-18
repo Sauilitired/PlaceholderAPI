@@ -41,32 +41,24 @@ public class ExpansionCloudManager {
     private static final String API_URL = "http://api.extendedclip.com/v2/";
     private static final Gson GSON = new Gson();
 
-
     private final PlaceholderAPIPlugin plugin;
     private final File expansionsDir;
-
     private final List<String> downloading = new ArrayList<>();
     private final Map<Integer, CloudExpansion> remote = new TreeMap<>();
 
-
     public ExpansionCloudManager(PlaceholderAPIPlugin plugin) {
         this.plugin = plugin;
-
         expansionsDir = new File(plugin.getDataFolder(), "expansions");
-
         final boolean result = expansionsDir.mkdirs();
         if (result) {
             plugin.getLogger().info("Created Expansions Directory");
         }
-
     }
-
 
     public void clean() {
         remote.clear();
         downloading.clear();
     }
-
 
     public Map<Integer, CloudExpansion> getCloudExpansions() {
         return remote;
@@ -76,7 +68,6 @@ public class ExpansionCloudManager {
         return remote.values().stream().filter(ex -> ex.getName().equalsIgnoreCase(name))
             .findFirst().orElse(null);
     }
-
 
     public int getCloudAuthorCount() {
         return remote.values().stream()
@@ -90,20 +81,17 @@ public class ExpansionCloudManager {
                 .shouldUpdate()).count());
     }
 
-
     public Map<Integer, CloudExpansion> getAllByAuthor(String author) {
-        if (remote.isEmpty())
+        if (remote.isEmpty()) {
             return new HashMap<>();
-
+        }
         Map<Integer, CloudExpansion> byAuthor = new TreeMap<>();
-
         for (CloudExpansion ex : remote.values()) {
-            if (!ex.getAuthor().equalsIgnoreCase(author))
+            if (!ex.getAuthor().equalsIgnoreCase(author)) {
                 continue;
-
+            }
             byAuthor.put(byAuthor.size(), ex);
         }
-
         return byAuthor;
     }
 
@@ -112,14 +100,12 @@ public class ExpansionCloudManager {
             return new HashMap<>();
 
         Map<Integer, CloudExpansion> has = new TreeMap<>();
-
         for (CloudExpansion ex : remote.values()) {
-            if (!ex.hasExpansion())
+            if (!ex.hasExpansion()) {
                 continue;
-
+            }
             has.put(has.size(), ex);
         }
-
         return has;
     }
 
@@ -146,32 +132,23 @@ public class ExpansionCloudManager {
         if (map == null || map.size() == 0 || page > getPagesAvailable(map, size)) {
             return new HashMap<>();
         }
-
         int end = size * page;
         int start = end - size;
-
         Map<Integer, CloudExpansion> ex = new TreeMap<>();
         IntStream.range(start, end).forEach(n -> ex.put(n, map.get(n)));
-
         return ex;
     }
 
-
     public void fetch(boolean allowUnverified) {
-
         plugin.getLogger().info("Fetching available expansion information...");
-
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-
             final String readJson = URLReader.read(API_URL);
             final Map<String, CloudExpansion> data =
                 GSON.fromJson(readJson, new TypeToken<Map<String, CloudExpansion>>() {
                 }.getType());
 
             final List<CloudExpansion> unsorted = new ArrayList<>();
-
             data.forEach((name, cexp) -> {
-
                 if ((allowUnverified || cexp.isVerified()) && cexp.getLatestVersion() != null
                     && cexp.getVersion(cexp.getLatestVersion()) != null) {
                     cexp.setName(name);
@@ -204,34 +181,24 @@ public class ExpansionCloudManager {
             if (updates > 0) {
                 plugin.getLogger().info(updates + " installed expansions have updates available.");
             }
-
         });
     }
 
-
-    public boolean isDownloading(String expansion) {
+    @SuppressWarnings("unused") public boolean isDownloading(String expansion) {
         return downloading.contains(expansion);
     }
 
     private void download(URL url, String name) throws IOException {
-
         InputStream is = null;
-
         FileOutputStream fos = null;
 
         try {
-
             URLConnection urlConn = url.openConnection();
-
             is = urlConn.getInputStream();
-
             fos = new FileOutputStream(
                 expansionsDir.getAbsolutePath() + File.separator + "Expansion-" + name + ".jar");
-
             byte[] buffer = new byte[is.available()];
-
             int l;
-
             while ((l = is.read(buffer)) > 0) {
                 fos.write(buffer, 0, l);
             }
@@ -248,7 +215,7 @@ public class ExpansionCloudManager {
         }
     }
 
-
+    @SuppressWarnings("unused")
     public void downloadExpansion(final String player, final CloudExpansion ex) {
         downloadExpansion(player, ex, ex.getLatestVersion());
     }
@@ -276,61 +243,43 @@ public class ExpansionCloudManager {
                 "") + " from url: " + ver.getUrl());
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-
             try {
-
                 download(new URL(ver.getUrl()), ex.getName());
-
                 plugin.getLogger().info("Download of expansion: " + ex.getName() + " complete!");
-
             } catch (Exception e) {
-
                 plugin.getLogger().warning(
                     "Failed to download expansion: " + ex.getName() + " from: " + ver.getUrl());
-
                 Bukkit.getScheduler().runTask(plugin, () -> {
-
                     downloading.remove(ex.getName());
-
                     if (player != null) {
                         Player p = Bukkit.getPlayer(player);
-
                         if (p != null) {
                             Msg.msg(p,
                                 "&cThere was a problem downloading expansion: &f" + ex.getName());
                         }
                     }
                 });
-
                 return;
             }
 
             Bukkit.getScheduler().runTask(plugin, () -> {
-
                 downloading.remove(ex.getName());
-
                 if (player != null) {
-
                     Player p = Bukkit.getPlayer(player);
-
                     if (p != null) {
                         Msg.msg(p, "&aExpansion &f" + ex.getName() + " &adownload complete!");
                     }
                 }
             });
-
         });
     }
 
-
     private static class URLReader {
 
-        static String read(String url) {
-            StringBuilder builder = new StringBuilder();
-
-            try (BufferedReader reader = new BufferedReader(
+        @SuppressWarnings("SameParameterValue") static String read(final String url) {
+            final StringBuilder builder = new StringBuilder();
+            try (final BufferedReader reader = new BufferedReader(
                 new InputStreamReader(new URL(url).openStream()))) {
-
                 String inputLine;
                 while ((inputLine = reader.readLine()) != null) {
                     builder.append(inputLine);
@@ -338,7 +287,6 @@ public class ExpansionCloudManager {
             } catch (Exception ex) {
                 builder.setLength(0);
             }
-
             return builder.toString();
         }
     }
